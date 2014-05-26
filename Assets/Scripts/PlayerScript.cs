@@ -133,7 +133,7 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", true);
 					if(colRight.gameObject.GetComponent<SpiderScript>().getVida() > 1 )
-						colDown.gameObject.GetComponent<SpiderScript>().reduceLife(1);
+						colRight.gameObject.GetComponent<SpiderScript>().reduceLife(1);
 					else{
 						Destroy(colRight.gameObject); 
 					}
