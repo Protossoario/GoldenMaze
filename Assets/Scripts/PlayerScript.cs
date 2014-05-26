@@ -62,7 +62,7 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", false);
-					//Destroy(colUp.transform.parent.gameObject);
+					Destroy(colUp.gameObject);
 				}
 			}
 			else if (moveDown) {
