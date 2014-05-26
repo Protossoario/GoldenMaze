@@ -14,10 +14,12 @@ public class SpiderScript : MonoBehaviour {
 	int time; // tiempo que falta de ejecutar de la animacion actual
 	int timeMax = 9; // tiempo maximo de una animacion de movimiento
 	Animator anim;
+	int vida = 2;
 	float maxSpeed = 2f;
 	bool turn; // variable que checa si es el turno de la arania de hacer un movimiento
 	bool moving; // checa si la arania se esta moviendo
 	bool aggressive; // sin utilizar aun
+
 	// Use this for initialization
 	void Start () {
 		damage = 1;
@@ -27,10 +29,25 @@ public class SpiderScript : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		turn = false;
 		moving = false;
+
 	}
 
 	public void startTurn() {
 		turn = true;
+	}
+
+	public void setVida(int vid)
+	{
+		vida = vid; 
+	}
+	public int getVida()
+	{
+		return vida;
+	}
+	public  void reduceLife(int dam)
+	{
+		vida = vida - dam;
+
 	}
 	/*
 	void checkPlayer()

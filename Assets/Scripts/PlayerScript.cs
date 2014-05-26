@@ -46,6 +46,7 @@ public class PlayerScript : MonoBehaviour {
 			bool moveDown = Input.GetKey (KeyCode.DownArrow);
 			bool moveLeft = Input.GetKey (KeyCode.LeftArrow);
 			bool moveRight = Input.GetKey (KeyCode.RightArrow);
+
 			if (moveUp) {
 				if (colUp == null) {
 					direction = 1;
@@ -62,7 +63,11 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", false);
-					Destroy(colUp.gameObject);
+					if(colUp.gameObject.GetComponent<SpiderScript>().getVida() > 1)
+						colUp.gameObject.GetComponent<SpiderScript>().reduceLife(1);
+					else{
+						Destroy(colUp.gameObject); 
+					}
 				}
 			}
 			else if (moveDown) {
@@ -81,7 +86,11 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", true);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", false);
-					//Destroy(colDown.transform.parent.gameObject);
+					if(colDown.gameObject.GetComponent<SpiderScript>().getVida() > 1)
+						colDown.gameObject.GetComponent<SpiderScript>().reduceLife(1);
+					else{
+						Destroy(colDown.gameObject); 
+					}
 				}
 			}
 			else if (moveLeft) {
@@ -100,7 +109,11 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", true);
 					anim.SetBool("AttackRight", false);
-					//Destroy(colLeft.transform.parent.gameObject);
+					if(colLeft.gameObject.GetComponent<SpiderScript>().getVida() > 1)
+						colLeft.gameObject.GetComponent<SpiderScript>().reduceLife(1);
+					else{
+						Destroy(colLeft.gameObject); 
+					}
 				}
 			}
 			else if (moveRight) {
@@ -119,7 +132,11 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", true);
-					//Destroy(colRight.transform.parent.gameObject);
+					if(colRight.gameObject.GetComponent<SpiderScript>().getVida() > 1 )
+						colDown.gameObject.GetComponent<SpiderScript>().reduceLife(1);
+					else{
+						Destroy(colRight.gameObject); 
+					}
 				}
 			}
 		} else if (turn) {
