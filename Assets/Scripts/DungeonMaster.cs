@@ -15,6 +15,7 @@ public class DungeonMaster : MonoBehaviour {
 	int enemyCount; // contador total de enemigos en el turno actual
 	int enemiesFinished; // contador de enemigos que ya han terminado su turno
 	bool gameOver;
+	public int playerMoves;
 	// Use this for initialization
 	void Start () {
 		state = 0;
@@ -23,6 +24,7 @@ public class DungeonMaster : MonoBehaviour {
 		gameOver = false;
 		player = GameObject.FindGameObjectWithTag("Player");
 		ps = player.GetComponent<PlayerScript>();
+		playerMoves = 2;
 	}
 	void startEnemyTurn()
 	{
@@ -66,7 +68,13 @@ public class DungeonMaster : MonoBehaviour {
 			break;
 		case 1:
 			if (!ps.getTurn()) { // si ya termino el turno del jugador
-				state = 2;
+				if(playerMoves<= 0)  {
+					state = 2;
+				}
+				else {
+					playerMoves--;
+					state = 0;
+				}
 				turns++;
 			}
 			break;
@@ -78,6 +86,7 @@ public class DungeonMaster : MonoBehaviour {
 		case 3:
 			if (enemiesFinished == enemyCount) { // si ya terminaron de moverse todos los enemigos
 				state = 0;
+				playerMoves = 2;
 			}
 			break;
 		}

@@ -204,6 +204,7 @@ public class PlayerScript : MonoBehaviour {
 			}
 
 			time--;
+
 			if (time <= 0) {
 				direction = 0;
 				turn = false;
