@@ -7,3 +7,6 @@ Library/
 Library/*
 
 *.*
+
+!Assets/*
+!ProjectSettings/*
