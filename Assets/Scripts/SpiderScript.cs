@@ -1,7 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Pathfinding;
 
+[RequireComponent (typeof (Seeker))]
 public class SpiderScript : MonoBehaviour {
+	public Transform playerTr;
+	protected Seeker seeker;
+	protected Transform tr;
+
 	int damage;
 	/* Directions:
 	 * 0 = none
@@ -29,7 +36,8 @@ public class SpiderScript : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		turn = false;
 		moving = false;
-
+		seeker = GetComponent<Seeker>();
+		tr = GetComponent<Transform>();
 	}
 
 	public void startTurn() {
@@ -60,6 +68,14 @@ public class SpiderScript : MonoBehaviour {
 
 
 	} */
+
+	void onPathComplete(Path p) {
+		if (p.error) {
+			return;
+		}
+		List<Vector3> path = p.vectorPath;
+		Debug.Log("Go to: " + path[0] + " from: " + tr.position + " and then to: " + path[1]);
+	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -108,6 +124,8 @@ public class SpiderScript : MonoBehaviour {
 			}
 			// Si no se ataca al jugador, checar el movimiento
 			else {
+				/* Obtener un camino del objeto Seeker */
+				seeker.StartPath(tr.position, playerTr.position, onPathComplete);
 				if (anim.GetBool("SpiderUp")) {
 					if (colUp != null && colUp.CompareTag("Wall")) {
 						anim.SetBool("SpiderUp", false);
