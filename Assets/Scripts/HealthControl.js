@@ -3,7 +3,7 @@ var health1 : Texture2D;// 1 of health
 var health2 : Texture2D;// 2 of health 
 var health3 : Texture2D; // 3 of health
 
-static var lives =3;
+static var lives = 3;
 function Start () {
 
 }

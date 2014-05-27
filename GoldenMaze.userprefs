@@ -1,12 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Users\Tuks\Documents\GitHub\GoldenMaze\Assets\AstarPathfindingProject\Core\AI\Seeker.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Keyscript.js">
     <Files>
-      <File FileName="Assets\Scripts\PlayerScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\EnemyScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SpiderScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DungeonMaster.cs" Line="1" Column="1" />
-      <File FileName="c:\Users\Tuks\Documents\GitHub\GoldenMaze\Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="412" Column="57" />
+      <File FileName="Assets\Scripts\Keyscript.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Keyscript.js" Line="4" Column="27" />
+      <File FileName="Assets\Scripts\HealthControl.js" Line="1" Column="1" />
+      <File FileName="c:\Users\Tuks\Documents\GitHub\GoldenMaze\Assets\AstarPathfindingProject\Core\AI\Seeker.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

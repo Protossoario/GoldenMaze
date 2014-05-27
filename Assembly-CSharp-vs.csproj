@@ -118,6 +118,7 @@
      <Compile Include="Assets\Scripts\CameraC.cs" />
      <Compile Include="Assets\Scripts\DungeonMaster.cs" />
      <Compile Include="Assets\Scripts\EnemyScript.cs" />
+     <Compile Include="Assets\Scripts\KeyScript.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\SpiderScript.cs" />
      <Compile Include="Assets\Scripts\WolfScript.cs" />

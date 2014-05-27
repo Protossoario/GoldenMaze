@@ -69,6 +69,10 @@ public class PlayerScript : MonoBehaviour {
 						Destroy(colUp.gameObject); 
 					}
 				}
+				else if(colUp.CompareTag("Key")){
+					KeyScript.dungeonKey = true;
+					Destroy(colUp.gameObject);
+				}
 			}
 			else if (moveDown) {
 				if (colDown == null) {
@@ -91,6 +95,10 @@ public class PlayerScript : MonoBehaviour {
 					else{
 						Destroy(colDown.gameObject); 
 					}
+				}
+				else if(colDown.CompareTag("Key")){
+					KeyScript.dungeonKey = true;
+					Destroy(colDown.gameObject);
 				}
 			}
 			else if (moveLeft) {
@@ -115,6 +123,10 @@ public class PlayerScript : MonoBehaviour {
 						Destroy(colLeft.gameObject); 
 					}
 				}
+				else if(colLeft.CompareTag("Key")){
+					KeyScript.dungeonKey = true;
+					Destroy(colLeft.gameObject);
+				}
 			}
 			else if (moveRight) {
 				if (colRight == null) {
@@ -137,6 +149,10 @@ public class PlayerScript : MonoBehaviour {
 					else{
 						Destroy(colRight.gameObject); 
 					}
+				}
+				else if(colRight.CompareTag("Key")){
+					KeyScript.dungeonKey = true;
+					Destroy(colRight.gameObject);
 				}
 			}
 		} else if (turn) {
