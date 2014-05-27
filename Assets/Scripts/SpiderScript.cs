@@ -78,6 +78,7 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", false);
+				HealthControl.lives--;
 			}
 			else if (colDown != null && colDown.CompareTag("Player")) {
 				direction = 2;
@@ -85,6 +86,8 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", true);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", false);
+				HealthControl.lives--;
+		
 			}
 			else if (colLeft != null && colLeft.CompareTag("Player")) {
 				direction = 3;
@@ -92,6 +95,7 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", true);
 				anim.SetBool("SpiderRight", false);
+				HealthControl.lives--;
 			}
 			else if (colRight != null && colRight.CompareTag("Player")) {
 				direction = 4;
@@ -99,6 +103,7 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", true);
+				HealthControl.lives--;
 			}
 			// Si no se ataca al jugador, checar el movimiento
 			else {
