@@ -69,13 +69,13 @@ public class SpiderScript : MonoBehaviour {
 
 	} */
 
-	void onPathComplete(Path p) {
+	/*void onPathComplete(Path p) {
 		if (p.error) {
 			return;
 		}
 		List<Vector3> path = p.vectorPath;
 		Debug.Log("Go to: " + path[0] + " from: " + tr.position + " and then to: " + path[1]);
-	}
+	}*/
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -125,7 +125,7 @@ public class SpiderScript : MonoBehaviour {
 			// Si no se ataca al jugador, checar el movimiento
 			else {
 				/* Obtener un camino del objeto Seeker */
-				seeker.StartPath(tr.position, playerTr.position, onPathComplete);
+				//seeker.StartPath(tr.position, playerTr.position, onPathComplete);
 				if (anim.GetBool("SpiderUp")) {
 					if (colUp != null && colUp.CompareTag("Wall")) {
 						anim.SetBool("SpiderUp", false);
