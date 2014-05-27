@@ -14,16 +14,16 @@ public class SpiderScript : MonoBehaviour {
 	int time; // tiempo que falta de ejecutar de la animacion actual
 	int timeMax = 9; // tiempo maximo de una animacion de movimiento
 	Animator anim;
-	int vida = 2;
+	public int life = 2;
 	float maxSpeed = 2f;
 	bool turn; // variable que checa si es el turno de la arania de hacer un movimiento
 	bool moving; // checa si la arania se esta moviendo
-	bool aggressive; // sin utilizar aun
+	//bool aggressive; // sin utilizar aun
 
 	// Use this for initialization
 	void Start () {
 		damage = 1;
-		aggressive = false;
+		//aggressive = false;
 		time = 0;
 		direction = 2;
 		anim = GetComponent<Animator>();
@@ -36,17 +36,15 @@ public class SpiderScript : MonoBehaviour {
 		turn = true;
 	}
 
-	public void setVida(int vid)
-	{
-		vida = vid; 
+	public void setLife(int l) {
+		life = l; 
 	}
-	public int getVida()
-	{
-		return vida;
+
+	public int getLife() {
+		return life;
 	}
-	public  void reduceLife(int dam)
-	{
-		vida = vida - dam;
+	public  void reduceLife(int dam) {
+		life -= dam;
 
 	}
 	/*
@@ -78,6 +76,7 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", false);
+				colUp.gameObject.GetComponent<PlayerScript>().reduceLife(damage);
 				HealthControl.lives--;
 			}
 			else if (colDown != null && colDown.CompareTag("Player")) {
@@ -86,8 +85,8 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", true);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", false);
+				colDown.gameObject.GetComponent<PlayerScript>().reduceLife(damage);
 				HealthControl.lives--;
-		
 			}
 			else if (colLeft != null && colLeft.CompareTag("Player")) {
 				direction = 3;
@@ -95,6 +94,7 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", true);
 				anim.SetBool("SpiderRight", false);
+				colLeft.gameObject.GetComponent<PlayerScript>().reduceLife(damage);
 				HealthControl.lives--;
 			}
 			else if (colRight != null && colRight.CompareTag("Player")) {
@@ -103,6 +103,7 @@ public class SpiderScript : MonoBehaviour {
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", true);
+				colRight.gameObject.GetComponent<PlayerScript>().reduceLife(damage);
 				HealthControl.lives--;
 			}
 			// Si no se ataca al jugador, checar el movimiento

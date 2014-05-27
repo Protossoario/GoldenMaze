@@ -5,8 +5,9 @@ public class PlayerScript : MonoBehaviour {
 
 	public float maxSpeed = 0.1f;
 	public int timeMax = 2;
-	public bool turn; // Check whether it's the players' turn to move, if true
+	public int life = 3;
 	bool attacking;
+	public bool turn; // Check whether it's the players' turn to move, if true
 	/* Directions:
 	 * 0 = none
 	 * 1 = up
@@ -33,7 +34,37 @@ public class PlayerScript : MonoBehaviour {
 	public bool getTurn() {
 		return turn;
 	}
-	
+
+	public void reduceLife(int dam) {
+		if (anim.GetBool ("MoveUp")) {
+			anim.SetBool("DamageUp", true);
+			anim.SetBool("DamageDown", false);
+			anim.SetBool("DamageLeft", false);
+			anim.SetBool("DamageRight", false);
+		} else if (anim.GetBool ("MoveDown")) {
+			anim.SetBool("DamageUp", false);
+			anim.SetBool("DamageDown", true);
+			anim.SetBool("DamageLeft", false);
+			anim.SetBool("DamageRight", false);
+		} else if (anim.GetBool ("MoveLeft")) {
+			anim.SetBool("DamageUp", false);
+			anim.SetBool("DamageDown", false);
+			anim.SetBool("DamageLeft", true);
+			anim.SetBool("DamageRight", false);
+		} else if (anim.GetBool ("MoveRight")) {
+			anim.SetBool("DamageUp", false);
+			anim.SetBool("DamageDown", false);
+			anim.SetBool("DamageLeft", false);
+			anim.SetBool("DamageRight", true);
+		}
+
+		life -= dam;
+	}
+
+	public void recoverLife(int l) {
+		life += l;
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 		//rigidbody2D.velocity = new Vector2 (Mathf.Lerp(0, Input.GetAxis("Horizontal") * maxSpeed, 10.0f), Mathf.Lerp(0, Input.GetAxis("Vertical") * maxSpeed, 10.0f)) ;
@@ -63,15 +94,15 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", false);
-					if(colUp.gameObject.GetComponent<SpiderScript>().getVida() > 1)
+					if(colUp.gameObject.GetComponent<SpiderScript>().getLife() > 1)
 						colUp.gameObject.GetComponent<SpiderScript>().reduceLife(1);
-					else{
+					else {
 						Destroy(colUp.gameObject); 
 					}
 				}
-				else if(colUp.CompareTag("Key")){
+				else if (colUp.CompareTag("Key")) {
 					KeyScript.dungeonKey = true;
-					Destroy(colUp.gameObject);
+					Destroy (colUp.gameObject);
 				}
 			}
 			else if (moveDown) {
@@ -90,16 +121,17 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", true);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", false);
-					if(colDown.gameObject.GetComponent<SpiderScript>().getVida() > 1)
+					if(colDown.gameObject.GetComponent<SpiderScript>().getLife() > 1)
 						colDown.gameObject.GetComponent<SpiderScript>().reduceLife(1);
-					else{
+					else {
 						Destroy(colDown.gameObject); 
 					}
 				}
-				else if(colDown.CompareTag("Key")){
+				else if (colDown.CompareTag("Key")) {
 					KeyScript.dungeonKey = true;
-					Destroy(colDown.gameObject);
+					Destroy (colDown.gameObject);
 				}
+
 			}
 			else if (moveLeft) {
 				if (colLeft == null) {
@@ -117,15 +149,15 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", true);
 					anim.SetBool("AttackRight", false);
-					if(colLeft.gameObject.GetComponent<SpiderScript>().getVida() > 1)
+					if(colLeft.gameObject.GetComponent<SpiderScript>().getLife() > 1)
 						colLeft.gameObject.GetComponent<SpiderScript>().reduceLife(1);
-					else{
+					else {
 						Destroy(colLeft.gameObject); 
 					}
 				}
-				else if(colLeft.CompareTag("Key")){
+				else if (colLeft.CompareTag("Key")) {
 					KeyScript.dungeonKey = true;
-					Destroy(colLeft.gameObject);
+					Destroy (colLeft.gameObject);
 				}
 			}
 			else if (moveRight) {
@@ -144,15 +176,15 @@ public class PlayerScript : MonoBehaviour {
 					anim.SetBool("AttackDown", false);
 					anim.SetBool("AttackLeft", false);
 					anim.SetBool("AttackRight", true);
-					if(colRight.gameObject.GetComponent<SpiderScript>().getVida() > 1 )
+					if(colRight.gameObject.GetComponent<SpiderScript>().getLife() > 1 )
 						colRight.gameObject.GetComponent<SpiderScript>().reduceLife(1);
-					else{
+					else {
 						Destroy(colRight.gameObject); 
 					}
 				}
-				else if(colRight.CompareTag("Key")){
+				else if (colRight.CompareTag("Key")) {
 					KeyScript.dungeonKey = true;
-					Destroy(colRight.gameObject);
+					Destroy (colRight.gameObject);
 				}
 			}
 		} else if (turn) {
@@ -175,15 +207,23 @@ public class PlayerScript : MonoBehaviour {
 			if (time <= 0) {
 				direction = 0;
 				turn = false;
-				if (attacking) {
-					anim.SetBool("AttackUp", false);
-					anim.SetBool("AttackDown", false);
-					anim.SetBool("AttackLeft", false);
-					anim.SetBool("AttackRight", false);
-				}
-				attacking = false;
 				rigidbody2D.velocity = new Vector2 (0f, 0f);
+				attacking = false;
 			}
 		}
+	}
+
+	void turnOffDamageAnimation() {
+		anim.SetBool ("DamageUp", false);
+		anim.SetBool ("DamageDown", false);
+		anim.SetBool ("DamageLeft", false);
+		anim.SetBool ("DamageRight", false);
+	}
+
+	void turnOffAttackAnimation() {
+		anim.SetBool ("AttackUp", false);
+		anim.SetBool ("AttackDown", false);
+		anim.SetBool ("AttackLeft", false);
+		anim.SetBool ("AttackRight", false);
 	}
 }
