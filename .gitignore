@@ -1,12 +1,12 @@
 
 Temp/__EditModeScene
 
-Temp/*
+Temp/**
 
 Library/
-Library/*
+Library/**
 
 *.*
 
-!Assets/*
-!ProjectSettings/*
+!Assets/**
+!ProjectSettings/**
