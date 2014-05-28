@@ -5,9 +5,9 @@ using Pathfinding;
 
 [RequireComponent (typeof (Seeker))]
 public class SpiderScript : MonoBehaviour {
-	public Transform playerTr;
 	protected Seeker seeker;
 	protected Transform tr;
+	protected Transform playerTr;
 
 	int damage;
 	/* Directions:
@@ -25,6 +25,7 @@ public class SpiderScript : MonoBehaviour {
 	float maxSpeed = 2f;
 	bool turn; // variable que checa si es el turno de la arania de hacer un movimiento
 	bool moving; // checa si la arania se esta moviendo
+	bool requestingPath; // checa si la arania esta esperando a que el Seeker calcule el camino
 	//bool aggressive; // sin utilizar aun
 
 	// Use this for initialization
@@ -36,8 +37,10 @@ public class SpiderScript : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		turn = false;
 		moving = false;
+		requestingPath = false;
 		seeker = GetComponent<Seeker>();
 		tr = GetComponent<Transform>();
+		playerTr = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
 	public void startTurn() {
@@ -69,23 +72,42 @@ public class SpiderScript : MonoBehaviour {
 
 	} */
 
-	/*void onPathComplete(Path p) {
+	// Funcion que se llama cuando el Seeker termina de calcular el camino hacia el jugador
+	void onPathComplete(Path p) {
 		if (p.error) {
 			return;
 		}
 		List<Vector3> path = p.vectorPath;
-		Debug.Log("Go to: " + path[0] + " from: " + tr.position + " and then to: " + path[1]);
-	}*/
+		Vector3 dirVec = path[1] - path[0]; // vector del siguiente segmento del camino
+		// se selecciona una de las cuatro direcciones en base al mayor componente del vector dirVec
+		if (Mathf.Abs(dirVec.x) < Mathf.Abs (dirVec.y)) {
+			if (dirVec.y > 0) {
+				direction = 1; // arriba
+			}
+			else {
+				direction = 2; // abajo
+			}
+		}
+		else {
+			if (dirVec.x > 0) {
+				direction = 4; // derecha
+			}
+			else {
+				direction = 3; // izquierda
+			}
+		}
+		moving = true;
+		requestingPath = false;
+	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (direction == 0 && turn) { // Al inicio del turno no tiene direccion
+		if (direction == 0 && turn && !requestingPath) { // Al inicio del turno no tiene direccion
 			Collider2D colUp = Physics2D.OverlapPoint(new Vector2(this.transform.position.x, this.transform.position.y + 0.32f));
 			Collider2D colDown = Physics2D.OverlapPoint(new Vector2(this.transform.position.x, this.transform.position.y - 0.32f));
 			Collider2D colLeft = Physics2D.OverlapPoint(new Vector2(this.transform.position.x - 0.32f, this.transform.position.y));
 			Collider2D colRight = Physics2D.OverlapPoint(new Vector2(this.transform.position.x + 0.32f, this.transform.position.y));
 			// Checar en las 4 direcciones si esta el jugador a un lado
-			// TODO: Atacar al jugador en la direccion apropiada
 			if (colUp != null && colUp.CompareTag("Player")) {
 				direction = 1;
 				anim.SetBool("SpiderUp", true);
@@ -125,7 +147,11 @@ public class SpiderScript : MonoBehaviour {
 			// Si no se ataca al jugador, checar el movimiento
 			else {
 				/* Obtener un camino del objeto Seeker */
-				//seeker.StartPath(tr.position, playerTr.position, onPathComplete);
+				seeker.StartPath(tr.position, playerTr.position, onPathComplete);
+				time = timeMax;
+				requestingPath = true;
+				// Movimiento arriba/abajo de la arania
+				/*
 				if (anim.GetBool("SpiderUp")) {
 					if (colUp != null && colUp.CompareTag("Wall")) {
 						anim.SetBool("SpiderUp", false);
@@ -157,6 +183,7 @@ public class SpiderScript : MonoBehaviour {
 					anim.SetBool("SpiderRight", false);
 					direction = 1;
 				}
+				*/
 			}
 		}
 		// El turno se esta ejecutando y la arania se esta desplazando de un tile a otro
@@ -169,10 +196,16 @@ public class SpiderScript : MonoBehaviour {
 				case 2:
 					rigidbody2D.velocity = new Vector2 (0f, -maxSpeed);
 					break;
+				case 3:
+					rigidbody2D.velocity = new Vector2 (-maxSpeed, 0f);
+					break;
+				case 4:
+					rigidbody2D.velocity = new Vector2 (maxSpeed, 0f);
+					break;
 				}
+				time--;
 			}
 
-			time--;
 			if (time <= 0) {
 				direction = 0;
 				turn = false;
