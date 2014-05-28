@@ -222,6 +222,31 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void turnOffAttackAnimation() {
+		if (anim.GetBool ("AttackUp")) {
+			anim.SetBool ("MoveUp", true);
+			anim.SetBool ("MoveDown", false);
+			anim.SetBool ("MoveLeft", false);
+			anim.SetBool ("MoveRight", false);
+		} else
+		if (anim.GetBool ("AttackDown")) {
+			anim.SetBool ("MoveUp", false);
+			anim.SetBool ("MoveDown", true);
+			anim.SetBool ("MoveLeft", false);
+			anim.SetBool ("MoveRight", false);
+		} else
+		if (anim.GetBool ("AttackLeft")) {
+			anim.SetBool ("MoveUp", false);
+			anim.SetBool ("MoveDown", false);
+			anim.SetBool ("MoveLeft", true);
+			anim.SetBool ("MoveRight", false);
+		} else
+		if (anim.GetBool ("AttackRight")) {
+			anim.SetBool ("MoveUp", false);
+			anim.SetBool ("MoveDown", false);
+			anim.SetBool ("MoveLeft", false);
+			anim.SetBool ("MoveRight", true);
+		}
+
 		anim.SetBool ("AttackUp", false);
 		anim.SetBool ("AttackDown", false);
 		anim.SetBool ("AttackLeft", false);

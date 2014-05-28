@@ -33,7 +33,7 @@ public class SpiderScript : MonoBehaviour {
 		damage = 1;
 		//aggressive = false;
 		time = 0;
-		direction = 2;
+		direction = 0;
 		anim = GetComponent<Animator>();
 		turn = false;
 		moving = false;
@@ -55,8 +55,29 @@ public class SpiderScript : MonoBehaviour {
 		return life;
 	}
 	public  void reduceLife(int dam) {
-		life -= dam;
+		if (anim.GetBool ("SpiderUp")) {
+			anim.SetBool("DamageUp", true);
+			anim.SetBool("DamageDown", false);
+			anim.SetBool("DamageLeft", false);
+			anim.SetBool("DamageRight", false);
+		} else if (anim.GetBool ("SpiderDown")) {
+			anim.SetBool("DamageUp", false);
+			anim.SetBool("DamageDown", true);
+			anim.SetBool("DamageLeft", false);
+			anim.SetBool("DamageRight", false);
+		} else if (anim.GetBool ("SpiderLeft")) {
+			anim.SetBool("DamageUp", false);
+			anim.SetBool("DamageDown", false);
+			anim.SetBool("DamageLeft", true);
+			anim.SetBool("DamageRight", false);
+		} else if (anim.GetBool ("SpiderRight")) {
+			anim.SetBool("DamageUp", false);
+			anim.SetBool("DamageDown", false);
+			anim.SetBool("DamageLeft", false);
+			anim.SetBool("DamageRight", true);
+		}
 
+		life -= dam;
 	}
 	/*
 	void checkPlayer()
@@ -75,6 +96,9 @@ public class SpiderScript : MonoBehaviour {
 	// Funcion que se llama cuando el Seeker termina de calcular el camino hacia el jugador
 	void onPathComplete(Path p) {
 		if (p.error) {
+			direction = 0;
+			moving = true;
+			requestingPath = false;
 			return;
 		}
 		List<Vector3> path = p.vectorPath;
@@ -83,17 +107,33 @@ public class SpiderScript : MonoBehaviour {
 		if (Mathf.Abs(dirVec.x) < Mathf.Abs (dirVec.y)) {
 			if (dirVec.y > 0) {
 				direction = 1; // arriba
+				anim.SetBool("SpiderUp", true);
+				anim.SetBool("SpiderDown", false);
+				anim.SetBool("SpiderLeft", false);
+				anim.SetBool("SpiderRight", false);
 			}
 			else {
 				direction = 2; // abajo
+				anim.SetBool("SpiderUp", false);
+				anim.SetBool("SpiderDown", true);
+				anim.SetBool("SpiderLeft", false);
+				anim.SetBool("SpiderRight", false);
 			}
 		}
 		else {
 			if (dirVec.x > 0) {
 				direction = 4; // derecha
+				anim.SetBool("SpiderUp", false);
+				anim.SetBool("SpiderDown", false);
+				anim.SetBool("SpiderLeft", false);
+				anim.SetBool("SpiderRight", true);
 			}
 			else {
 				direction = 3; // izquierda
+				anim.SetBool("SpiderUp", false);
+				anim.SetBool("SpiderDown", false);
+				anim.SetBool("SpiderLeft", true);
+				anim.SetBool("SpiderRight", false);
 			}
 		}
 		moving = true;
@@ -150,40 +190,6 @@ public class SpiderScript : MonoBehaviour {
 				seeker.StartPath(tr.position, playerTr.position, onPathComplete);
 				time = timeMax;
 				requestingPath = true;
-				// Movimiento arriba/abajo de la arania
-				/*
-				if (anim.GetBool("SpiderUp")) {
-					if (colUp != null && colUp.CompareTag("Wall")) {
-						anim.SetBool("SpiderUp", false);
-						anim.SetBool("SpiderDown", true);
-						direction = 2;
-					}
-					else {
-						direction = 1;
-						time = timeMax;
-						moving = true;
-					}
-				}
-				else if (anim.GetBool("SpiderDown")) {
-					if (colDown != null && colDown.CompareTag("Wall")) {
-						anim.SetBool("SpiderUp", true);
-						anim.SetBool("SpiderDown", false);
-						direction = 1;
-					}
-					else {
-						direction = 2;
-						time = timeMax;
-						moving = true;
-					}
-				}
-				else {
-					anim.SetBool("SpiderUp", true);
-					anim.SetBool("SpiderDown", false);
-					anim.SetBool("SpiderLeft", false);
-					anim.SetBool("SpiderRight", false);
-					direction = 1;
-				}
-				*/
 			}
 		}
 		// El turno se esta ejecutando y la arania se esta desplazando de un tile a otro
@@ -209,12 +215,22 @@ public class SpiderScript : MonoBehaviour {
 			if (time <= 0) {
 				direction = 0;
 				turn = false;
-				moving = false;
+				if (moving) {
+					moving = false;
+					AstarPath.active.UpdateGraphs(GetComponent<SpriteRenderer>().bounds);
+				}
 				rigidbody2D.velocity = new Vector2 (0f, 0f);
 				GameObject dm = GameObject.Find("Dungeon Master");
 				DungeonMaster dmScript = dm.GetComponent<DungeonMaster>();
 				dmScript.notifyTurnFinish();
 			}
 		}
+	}
+
+	void turnOffDamageAnimation() {
+		anim.SetBool ("DamageUp", false);
+		anim.SetBool ("DamageDown", false);
+		anim.SetBool ("DamageLeft", false);
+		anim.SetBool ("DamageRight", false);
 	}
 }
