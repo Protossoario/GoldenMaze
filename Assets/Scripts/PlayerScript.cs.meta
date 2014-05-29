@@ -2,7 +2,9 @@ fileFormatVersion: 2
 guid: 0387769a6644b8641ad148e90d07c0dc
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - swordSound: {fileID: 8300000, guid: 96773edc62c534754b55b902283de473, type: 3}
+  - spiderSound: {fileID: 8300000, guid: 1c8565bad2a894520a2f4e055b8c81a9, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

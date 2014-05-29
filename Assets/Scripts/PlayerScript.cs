@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class PlayerScript : MonoBehaviour {
-
+	public AudioClip swordSound;
+	public AudioClip spiderSound;
 	public float maxSpeed = 0.1f;
 	public int timeMax = 2;
 	public int life = 3;
@@ -227,20 +228,20 @@ public class PlayerScript : MonoBehaviour {
 			anim.SetBool ("MoveDown", false);
 			anim.SetBool ("MoveLeft", false);
 			anim.SetBool ("MoveRight", false);
-		} else
-		if (anim.GetBool ("AttackDown")) {
+		}
+		else if (anim.GetBool ("AttackDown")) {
 			anim.SetBool ("MoveUp", false);
 			anim.SetBool ("MoveDown", true);
 			anim.SetBool ("MoveLeft", false);
 			anim.SetBool ("MoveRight", false);
-		} else
-		if (anim.GetBool ("AttackLeft")) {
+		}
+		else if (anim.GetBool ("AttackLeft")) {
 			anim.SetBool ("MoveUp", false);
 			anim.SetBool ("MoveDown", false);
 			anim.SetBool ("MoveLeft", true);
 			anim.SetBool ("MoveRight", false);
-		} else
-		if (anim.GetBool ("AttackRight")) {
+		}
+		else if (anim.GetBool ("AttackRight")) {
 			anim.SetBool ("MoveUp", false);
 			anim.SetBool ("MoveDown", false);
 			anim.SetBool ("MoveLeft", false);
@@ -251,5 +252,13 @@ public class PlayerScript : MonoBehaviour {
 		anim.SetBool ("AttackDown", false);
 		anim.SetBool ("AttackLeft", false);
 		anim.SetBool ("AttackRight", false);
+	}
+
+	void playSpiderSound() {
+		GetComponent<AudioSource>().PlayOneShot(spiderSound);
+	}
+
+	void playSwordSound() {
+		GetComponent<AudioSource>().PlayOneShot(swordSound);
 	}
 }
