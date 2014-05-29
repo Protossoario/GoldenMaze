@@ -13,9 +13,11 @@ public class DungeonMaster : MonoBehaviour {
 	public int state;
 	public int turns; // contador de turnos del jugador que han progresado
 	public int enemyCount; // contador total de enemigos en el turno actual
-	public int enemiesFinished; // contador de enemigos que ya han terminado su turno
 	public int playerMoves;
+	public int enemiesFinished;
+	public bool waitingOnEnemy;
 	// Use this for initialization
+	private GameObject[] spiderList;
 	void Start () {
 		state = 0;
 		turns = 0;
@@ -23,10 +25,12 @@ public class DungeonMaster : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag("Player");
 		ps = player.GetComponent<PlayerScript>();
 		playerMoves = 1;
+		enemiesFinished = 0;
+		waitingOnEnemy = false;
 	}
 	void startEnemyTurn()
 	{
-		GameObject[] spiders =GameObject.FindGameObjectsWithTag("Spider");
+		GameObject[] spiders = GameObject.FindGameObjectsWithTag("Spider");
 		enemyCount = spiders.Length;
 		for(int i = 0; i < spiders.Length; i++)
 		{
@@ -37,6 +41,7 @@ public class DungeonMaster : MonoBehaviour {
 		}
 	}
 	public void notifyTurnFinish() {
+		waitingOnEnemy = false;
 		enemiesFinished++;
 	}
 	void updateTraps()
@@ -75,16 +80,24 @@ public class DungeonMaster : MonoBehaviour {
 				}
 				turns++;
 			}
+			enemiesFinished = 0;
+			spiderList = GameObject.FindGameObjectsWithTag("Spider");
+			enemyCount = spiderList.Length;
 			break;
 		case 2:
-			enemiesFinished = 0;
-			startEnemyTurn();
+			waitingOnEnemy = true;
+			spiderList[enemiesFinished].GetComponent<SpiderScript>().startTurn();
 			state = 3;
 			break;
 		case 3:
-			if (enemiesFinished == enemyCount) { // si ya terminaron de moverse todos los enemigos
-				state = 0;
-				playerMoves = 1;
+			if (!waitingOnEnemy) {
+				if (enemiesFinished == enemyCount) { // si ya terminaron de moverse todos los enemigos
+					state = 0;
+					playerMoves = 1;
+				}
+				else {
+					state = 2;
+				}
 			}
 			break;
 		}
