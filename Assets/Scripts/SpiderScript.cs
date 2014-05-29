@@ -95,44 +95,77 @@ public class SpiderScript : MonoBehaviour {
 
 	// Funcion que se llama cuando el Seeker termina de calcular el camino hacia el jugador
 	void onPathComplete(Path p) {
+		Collider2D colUp = Physics2D.OverlapPoint(new Vector2(this.transform.position.x, this.transform.position.y + 0.32f));
+		Collider2D colDown = Physics2D.OverlapPoint(new Vector2(this.transform.position.x, this.transform.position.y - 0.32f));
+		Collider2D colLeft = Physics2D.OverlapPoint(new Vector2(this.transform.position.x - 0.32f, this.transform.position.y));
+		Collider2D colRight = Physics2D.OverlapPoint(new Vector2(this.transform.position.x + 0.32f, this.transform.position.y));
 		if (p.error) {
 			direction = 0;
-			moving = true;
-			requestingPath = false;
-			return;
 		}
-		List<Vector3> path = p.vectorPath;
-		Vector3 dirVec = path[1] - path[0]; // vector del siguiente segmento del camino
-		// se selecciona una de las cuatro direcciones en base al mayor componente del vector dirVec
-		if (Mathf.Abs(dirVec.x) < Mathf.Abs (dirVec.y)) {
-			if (dirVec.y > 0) {
-				direction = 1; // arriba
+		else {
+			List<Vector3> path = p.vectorPath;
+			Vector3 dirVec = path[1] - path[0]; // vector del siguiente segmento del camino
+			// se selecciona una de las cuatro direcciones en base al mayor componente del vector dirVec
+			if (Mathf.Abs(dirVec.x) < Mathf.Abs (dirVec.y)) {
+				if (dirVec.y > 0 && colUp == null) {
+					direction = 1; // arriba
+					anim.SetBool("SpiderUp", true);
+					anim.SetBool("SpiderDown", false);
+					anim.SetBool("SpiderLeft", false);
+					anim.SetBool("SpiderRight", false);
+				}
+				else if (colDown == null) {
+					direction = 2; // abajo
+					anim.SetBool("SpiderUp", false);
+					anim.SetBool("SpiderDown", true);
+					anim.SetBool("SpiderLeft", false);
+					anim.SetBool("SpiderRight", false);
+				}
+			}
+			else {
+				if (dirVec.x > 0 && colRight == null) {
+					direction = 4; // derecha
+					anim.SetBool("SpiderUp", false);
+					anim.SetBool("SpiderDown", false);
+					anim.SetBool("SpiderLeft", false);
+					anim.SetBool("SpiderRight", true);
+				}
+				else if (colLeft == null) {
+					direction = 3; // izquierda
+					anim.SetBool("SpiderUp", false);
+					anim.SetBool("SpiderDown", false);
+					anim.SetBool("SpiderLeft", true);
+					anim.SetBool("SpiderRight", false);
+				}
+			}
+		}
+		if (direction == 0) {
+			if (colUp == null) {
+				direction = 1;
 				anim.SetBool("SpiderUp", true);
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", false);
 			}
-			else {
-				direction = 2; // abajo
-				anim.SetBool("SpiderUp", false);
-				anim.SetBool("SpiderDown", true);
-				anim.SetBool("SpiderLeft", false);
-				anim.SetBool("SpiderRight", false);
-			}
-		}
-		else {
-			if (dirVec.x > 0) {
-				direction = 4; // derecha
+			else if (colRight == null) {
+				direction = 4;
 				anim.SetBool("SpiderUp", false);
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", true);
 			}
-			else {
-				direction = 3; // izquierda
+			else if (colLeft == null) {
+				direction = 3;
 				anim.SetBool("SpiderUp", false);
 				anim.SetBool("SpiderDown", false);
 				anim.SetBool("SpiderLeft", true);
+				anim.SetBool("SpiderRight", false);
+			}
+			else if (colDown == null) {
+				direction = 2;
+				anim.SetBool("SpiderUp", false);
+				anim.SetBool("SpiderDown", true);
+				anim.SetBool("SpiderLeft", false);
 				anim.SetBool("SpiderRight", false);
 			}
 		}

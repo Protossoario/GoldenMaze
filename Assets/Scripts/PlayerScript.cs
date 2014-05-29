@@ -98,7 +98,9 @@ public class PlayerScript : MonoBehaviour {
 					if(colUp.gameObject.GetComponent<SpiderScript>().getLife() > 1)
 						colUp.gameObject.GetComponent<SpiderScript>().reduceLife(1);
 					else {
-						Destroy(colUp.gameObject); 
+						Bounds spiderBounds = colUp.gameObject.GetComponent<SpriteRenderer>().bounds;
+						Destroy(colUp.gameObject);
+						AstarPath.active.UpdateGraphs(spiderBounds);
 					}
 				}
 				else if (colUp.CompareTag("Key")) {
@@ -125,7 +127,9 @@ public class PlayerScript : MonoBehaviour {
 					if(colDown.gameObject.GetComponent<SpiderScript>().getLife() > 1)
 						colDown.gameObject.GetComponent<SpiderScript>().reduceLife(1);
 					else {
-						Destroy(colDown.gameObject); 
+						Bounds spiderBounds = colDown.gameObject.GetComponent<SpriteRenderer>().bounds;
+						Destroy(colDown.gameObject);
+						AstarPath.active.UpdateGraphs(spiderBounds);
 					}
 				}
 				else if (colDown.CompareTag("Key")) {
@@ -153,7 +157,9 @@ public class PlayerScript : MonoBehaviour {
 					if(colLeft.gameObject.GetComponent<SpiderScript>().getLife() > 1)
 						colLeft.gameObject.GetComponent<SpiderScript>().reduceLife(1);
 					else {
-						Destroy(colLeft.gameObject); 
+						Bounds spiderBounds = colLeft.gameObject.GetComponent<SpriteRenderer>().bounds;
+						Destroy(colLeft.gameObject);
+						AstarPath.active.UpdateGraphs(spiderBounds);
 					}
 				}
 				else if (colLeft.CompareTag("Key")) {
@@ -180,7 +186,9 @@ public class PlayerScript : MonoBehaviour {
 					if(colRight.gameObject.GetComponent<SpiderScript>().getLife() > 1 )
 						colRight.gameObject.GetComponent<SpiderScript>().reduceLife(1);
 					else {
-						Destroy(colRight.gameObject); 
+						Bounds spiderBounds = colRight.gameObject.GetComponent<SpriteRenderer>().bounds;
+						Destroy(colRight.gameObject);
+						AstarPath.active.UpdateGraphs(spiderBounds);; 
 					}
 				}
 				else if (colRight.CompareTag("Key")) {

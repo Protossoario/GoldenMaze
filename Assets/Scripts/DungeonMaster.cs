@@ -85,8 +85,10 @@ public class DungeonMaster : MonoBehaviour {
 			enemyCount = spiderList.Length;
 			break;
 		case 2:
-			waitingOnEnemy = true;
-			spiderList[enemiesFinished].GetComponent<SpiderScript>().startTurn();
+			if (enemyCount > 0) {
+				waitingOnEnemy = true;
+				spiderList[enemiesFinished].GetComponent<SpiderScript>().startTurn();
+			}
 			state = 3;
 			break;
 		case 3:
