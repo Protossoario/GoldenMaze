@@ -8,7 +8,12 @@ public class PlayerScript : MonoBehaviour {
 	public int timeMax = 2;
 	public int life = 3;
 	bool attacking;
+	public string lvlChange;
 	public bool turn; // Check whether it's the players' turn to move, if true
+	bool moveUp;
+	bool moveDown;
+	bool moveLeft;
+	bool moveRight;
 	/* Directions:
 	 * 0 = none
 	 * 1 = up
@@ -19,7 +24,11 @@ public class PlayerScript : MonoBehaviour {
 	int direction;
 	int time;
 	Animator anim;
-	
+
+	private float touch_delta;
+	private Vector2 current_position;
+	private Vector2 previous_position;
+	public int comfort;
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
@@ -74,10 +83,37 @@ public class PlayerScript : MonoBehaviour {
 			Collider2D colDown = Physics2D.OverlapPoint(new Vector2(this.transform.position.x, this.transform.position.y - 0.32f));
 			Collider2D colLeft = Physics2D.OverlapPoint(new Vector2(this.transform.position.x - 0.32f, this.transform.position.y));
 			Collider2D colRight = Physics2D.OverlapPoint(new Vector2(this.transform.position.x + 0.32f, this.transform.position.y));
-			bool moveUp = Input.GetKey (KeyCode.UpArrow);
-			bool moveDown = Input.GetKey (KeyCode.DownArrow);
-			bool moveLeft = Input.GetKey (KeyCode.LeftArrow);
-			bool moveRight = Input.GetKey (KeyCode.RightArrow);
+
+			moveUp = false;
+			moveDown = false;
+			moveRight = false;
+			moveLeft = false;
+
+			if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began) {
+				previous_position = Input.GetTouch(0).position;
+			}
+			if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) {
+				current_position = Input.GetTouch(0).position;
+				touch_delta = current_position.magnitude - previous_position.magnitude;
+				
+				if (touch_delta >= 0) {
+					if (current_position.x - previous_position.x > current_position.y - previous_position.y) {
+						moveRight = true;
+						Debug.Log("Left");
+					} else {
+						moveUp = true;
+						Debug.Log("Down");
+					}
+				} else {
+					if (current_position.x - previous_position.x > current_position.y - previous_position.y) {
+						moveDown = true;
+						Debug.Log("Up");
+					} else {
+						moveLeft = true;
+						Debug.Log("Right");
+					}
+				}
+			}
 
 			if (moveUp) {
 				if (colUp == null) {
@@ -107,6 +143,9 @@ public class PlayerScript : MonoBehaviour {
 					KeyScript.dungeonKey = true;
 					Destroy (colUp.gameObject);
 				}
+				else if(colUp.CompareTag("Door") && KeyScript.dungeonKey)
+				{	Application.LoadLevel(lvlChange);}
+
 			}
 			else if (moveDown) {
 				if (colDown == null) {
@@ -136,6 +175,8 @@ public class PlayerScript : MonoBehaviour {
 					KeyScript.dungeonKey = true;
 					Destroy (colDown.gameObject);
 				}
+				else if(colDown.CompareTag("Door") && KeyScript.dungeonKey)
+				{	Application.LoadLevel(lvlChange);}
 
 			}
 			else if (moveLeft) {
@@ -166,6 +207,8 @@ public class PlayerScript : MonoBehaviour {
 					KeyScript.dungeonKey = true;
 					Destroy (colLeft.gameObject);
 				}
+				else if(colLeft.CompareTag("Door") && KeyScript.dungeonKey)
+				{	Application.LoadLevel(lvlChange);}
 			}
 			else if (moveRight) {
 				if (colRight == null) {
@@ -195,6 +238,8 @@ public class PlayerScript : MonoBehaviour {
 					KeyScript.dungeonKey = true;
 					Destroy (colRight.gameObject);
 				}
+				else if(colRight.CompareTag("Door") && KeyScript.dungeonKey)
+				{	Application.LoadLevel(lvlChange);}
 			}
 		} else if (turn) {
 			switch (direction) {
@@ -255,7 +300,7 @@ public class PlayerScript : MonoBehaviour {
 			anim.SetBool ("MoveLeft", false);
 			anim.SetBool ("MoveRight", true);
 		}
-
+		
 		anim.SetBool ("AttackUp", false);
 		anim.SetBool ("AttackDown", false);
 		anim.SetBool ("AttackLeft", false);
