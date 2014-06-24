@@ -84,36 +84,10 @@ public class PlayerScript : MonoBehaviour {
 			Collider2D colLeft = Physics2D.OverlapPoint(new Vector2(this.transform.position.x - 0.32f, this.transform.position.y));
 			Collider2D colRight = Physics2D.OverlapPoint(new Vector2(this.transform.position.x + 0.32f, this.transform.position.y));
 
-			moveUp = false;
-			moveDown = false;
-			moveRight = false;
-			moveLeft = false;
-
-			if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began) {
-				previous_position = Input.GetTouch(0).position;
-			}
-			if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended) {
-				current_position = Input.GetTouch(0).position;
-				touch_delta = current_position.magnitude - previous_position.magnitude;
-				
-				if (touch_delta >= 0) {
-					if (current_position.x - previous_position.x > current_position.y - previous_position.y) {
-						moveRight = true;
-						Debug.Log("Left");
-					} else {
-						moveUp = true;
-						Debug.Log("Down");
-					}
-				} else {
-					if (current_position.x - previous_position.x > current_position.y - previous_position.y) {
-						moveDown = true;
-						Debug.Log("Up");
-					} else {
-						moveLeft = true;
-						Debug.Log("Right");
-					}
-				}
-			}
+			moveUp = Input.GetKey (KeyCode.UpArrow);
+			moveDown = Input.GetKey (KeyCode.DownArrow);
+			moveLeft = Input.GetKey (KeyCode.LeftArrow);
+			moveRight = Input.GetKey (KeyCode.RightArrow);
 
 			if (moveUp) {
 				if (colUp == null) {
