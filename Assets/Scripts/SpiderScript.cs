@@ -104,39 +104,44 @@ public class SpiderScript : MonoBehaviour {
 		}
 		else {
 			List<Vector3> path = p.vectorPath;
-			Vector3 dirVec = path[1] - path[0]; // vector del siguiente segmento del camino
-			// se selecciona una de las cuatro direcciones en base al mayor componente del vector dirVec
-			if (Mathf.Abs(dirVec.x) < Mathf.Abs (dirVec.y)) {
-				if (dirVec.y > 0 && colUp == null) {
-					direction = 1; // arriba
-					anim.SetBool("SpiderUp", true);
-					anim.SetBool("SpiderDown", false);
-					anim.SetBool("SpiderLeft", false);
-					anim.SetBool("SpiderRight", false);
+			if (path.Count < 10) {
+				Vector3 dirVec = path[1] - path[0]; // vector del siguiente segmento del camino
+				// se selecciona una de las cuatro direcciones en base al mayor componente del vector dirVec
+				if (Mathf.Abs(dirVec.x) < Mathf.Abs (dirVec.y)) {
+					if (dirVec.y > 0 && colUp == null) {
+						direction = 1; // arriba
+						anim.SetBool("SpiderUp", true);
+						anim.SetBool("SpiderDown", false);
+						anim.SetBool("SpiderLeft", false);
+						anim.SetBool("SpiderRight", false);
+					}
+					else if (colDown == null) {
+						direction = 2; // abajo
+						anim.SetBool("SpiderUp", false);
+						anim.SetBool("SpiderDown", true);
+						anim.SetBool("SpiderLeft", false);
+						anim.SetBool("SpiderRight", false);
+					}
 				}
-				else if (colDown == null) {
-					direction = 2; // abajo
-					anim.SetBool("SpiderUp", false);
-					anim.SetBool("SpiderDown", true);
-					anim.SetBool("SpiderLeft", false);
-					anim.SetBool("SpiderRight", false);
+				else {
+					if (dirVec.x > 0 && colRight == null) {
+						direction = 4; // derecha
+						anim.SetBool("SpiderUp", false);
+						anim.SetBool("SpiderDown", false);
+						anim.SetBool("SpiderLeft", false);
+						anim.SetBool("SpiderRight", true);
+					}
+					else if (colLeft == null) {
+						direction = 3; // izquierda
+						anim.SetBool("SpiderUp", false);
+						anim.SetBool("SpiderDown", false);
+						anim.SetBool("SpiderLeft", true);
+						anim.SetBool("SpiderRight", false);
+					}
 				}
 			}
 			else {
-				if (dirVec.x > 0 && colRight == null) {
-					direction = 4; // derecha
-					anim.SetBool("SpiderUp", false);
-					anim.SetBool("SpiderDown", false);
-					anim.SetBool("SpiderLeft", false);
-					anim.SetBool("SpiderRight", true);
-				}
-				else if (colLeft == null) {
-					direction = 3; // izquierda
-					anim.SetBool("SpiderUp", false);
-					anim.SetBool("SpiderDown", false);
-					anim.SetBool("SpiderLeft", true);
-					anim.SetBool("SpiderRight", false);
-				}
+				direction = 0;
 			}
 		}
 		if (direction == 0) {
