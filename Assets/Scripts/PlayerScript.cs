@@ -45,23 +45,58 @@ public class PlayerScript : MonoBehaviour {
 		return turn;
 	}
 
+	public void setMoveUp(bool b) {
+		moveUp = b;
+	}
+
+	public bool getMoveUp() {
+		return moveUp;
+	}
+
+	public void setMoveDown(bool b) {
+		moveDown = b;
+	}
+	
+	public bool getMoveDown() {
+		return moveDown;
+	}
+
+	public void setMoveLeft(bool b) {
+		moveLeft = b;
+	}
+	
+	public bool getMoveLeft() {
+		return moveLeft;
+	}
+
+	public void setMoveRight(bool b) {
+		moveRight = b;
+	}
+	
+	public bool getMoveRight() {
+		return moveRight;
+	}
+
 	public void reduceLife(int dam) {
 		if (anim.GetBool ("MoveUp")) {
 			anim.SetBool("DamageUp", true);
 			anim.SetBool("DamageDown", false);
 			anim.SetBool("DamageLeft", false);
 			anim.SetBool("DamageRight", false);
-		} else if (anim.GetBool ("MoveDown")) {
+		}
+		else if (anim.GetBool ("MoveDown")) {
 			anim.SetBool("DamageUp", false);
 			anim.SetBool("DamageDown", true);
 			anim.SetBool("DamageLeft", false);
 			anim.SetBool("DamageRight", false);
-		} else if (anim.GetBool ("MoveLeft")) {
+		}
+		else if (anim.GetBool ("MoveLeft")) {
 			anim.SetBool("DamageUp", false);
 			anim.SetBool("DamageDown", false);
 			anim.SetBool("DamageLeft", true);
 			anim.SetBool("DamageRight", false);
-		} else if (anim.GetBool ("MoveRight")) {
+		}
+		else if (anim.GetBool ("MoveRight")) {
 			anim.SetBool("DamageUp", false);
 			anim.SetBool("DamageDown", false);
 			anim.SetBool("DamageLeft", false);
